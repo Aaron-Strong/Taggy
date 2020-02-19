@@ -37,25 +37,25 @@ class TagCommand extends Command {
     exec(message, args) {
         const intent = args.one.toLowerCase();
         if(intent === "" || intent === "help" || intent === "h") {
-            tag_help(message);
+            return tag_help(message);
         }
         else if (intent === "add") {
-            tag_add(message, args, Tags);
+            return tag_add(message, args, Tags);
         }
         else if (intent === "edit") {
-            tag_edit(message, args, Tags);
+            return tag_edit(message, args, Tags);
         }
         else if (intent === "delete") {
-            tag_delete(message, args, Tags)
+            return tag_delete(message, args, Tags)
         }
         else if (intent === "list") {
             if(args.two.toLowerCase() === "all" || args.two === ""){
-                 tag_list_all(message, Tags);
+                 return tag_list_all(message, Tags);
             }
-            else { tag_list(message, args, Tags, this.client.util); }
+            else { return tag_list(message, args, Tags, this.client.util); }
         } 
         else {
-            tag_show(message, args, Tags)
+            return tag_show(message, args, Tags)
         }
     }
 }

@@ -4,8 +4,8 @@ const env = require('./env.js');
 
 // Setup bot client
 const taggy = new AkairoClient({
-    ownerID: env.owner_id, // or ['123992700587343872', '86890631690977280']
-    prefix: env.prefix, // or ['?', '!']
+    ownerID: env.owner_id,
+    prefix: env.prefix,
     commandDirectory: './commands/',
     inhibitorDirectory: './inhibitors/',
     listenerDirectory: './listeners/',
@@ -19,14 +19,14 @@ const taggy = new AkairoClient({
 // Setup database connection
 db.authenticate()
   .then(() => {
-    console.log('Connection has been established successfully.');
+    console.log('Connection to database has been established successfully.');
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
 });
 
 Tags.findAll().then(tags => {
-    console.log("All tags:", JSON.stringify(tags, null, 4));
+    console.log(`Found ${tags.length} tags to abuse!`);
 });
 
 

@@ -1,4 +1,3 @@
-
 function show_tag(message, args, Tags) {
     let name = args.one;
     console.log("Searching for tag '" + name + "'");

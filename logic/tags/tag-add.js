@@ -19,7 +19,6 @@ function add_tag(message, args, Tags) {
         });
         return message.util.send("Added tag '" + name + "' successfully");
     });
-    return;
 }
 
 module.exports = add_tag;

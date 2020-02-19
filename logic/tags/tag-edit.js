@@ -25,7 +25,6 @@ function edit_tag(message, args, Tags) {
             return message.util.send("Edited tag '" + name + "' successfully");
           });
     });
-    return;
 }
 
 module.exports = edit_tag;

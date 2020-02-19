@@ -1,27 +1,13 @@
 const Pagination = require('discord-paginationembed');
 
-function list_tag(message, args, Tags, util) {
-    let member;
-    // If we can't find a member, exit function;
-    try {
-        member = util.resolveMember(args.two, message.guild.members);
-    } catch (error) { }
-    if(member == null) {
-        return message.util.send("Can't find a member with that username :C");
-    }
-    // Else
-    console.log(`Found '${member.displayName}' with ID '${member.id}'`);
-    Tags.findAll({
-        where: {
-            user: member.id
-        }
-    })
-    .then(tags => {
-        if(tags.length == 0) {return message.util.send(`${member.displayName} doesn't own any tags`)}
+function list_all_tag(message, Tags) {
+    // Check if tag exists
+    Tags.findAll().then(tags => {
         // Make tags self aware of their current index
         tags.forEach(function(tag, index) {
             tag.index = index;
         });
+
         // Create pagination
         const FieldsEmbed = new Pagination.FieldsEmbed()
         // A must: an array to paginate, can be an array of any type
@@ -37,7 +23,7 @@ function list_tag(message, args, Tags, util) {
         // Disable the default emojis
         .setDisabledNavigationEmojis(['DELETE'])
         // Format based on the array, in this case we're formatting the page based on each object's `word` property
-        .formatField(`${member.displayName}'s tags! (${tags.length})`, tag => (`${tag.index + 1}. ${tag.name}`))
+        .formatField('All the tags! (' + tags.length + ")", tag => ((tag.index + 1) + ". " + tag.name))
         .setDeleteOnTimeout(true);
         // Customise embed
         FieldsEmbed.embed
@@ -51,4 +37,4 @@ function list_tag(message, args, Tags, util) {
 
 
 
-module.exports = list_tag;
+module.exports = list_all_tag;

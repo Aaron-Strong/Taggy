@@ -23,6 +23,10 @@ const Tags = sequelize.define('tags', {
     content: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    user: {
+      type: Sequelize.STRING,
+      allowNull: false
     }
   }, {
     modelName: 'tags'

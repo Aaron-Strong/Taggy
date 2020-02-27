@@ -1,4 +1,5 @@
 const { Inhibitor } = require('discord-akairo');
+const { blacklist } = require('../env.js')
 
 class BlacklistInhibitor extends Inhibitor {
     constructor() {
@@ -8,8 +9,9 @@ class BlacklistInhibitor extends Inhibitor {
     }
 
     exec(message) {
-        // Blacklist mehdi cuz he's a cunt!
-        const blacklist = ['155763335369981953'];
+        if(!blacklist) {
+            blacklist = [""];
+        }
         return blacklist.includes(message.author.id);
     }
 }

@@ -7,12 +7,12 @@ const tag_list_all = require("../logic/tags/tag-list-all");
 const tag_list = require("../logic/tags/tag-list");
 const tag_show = require("../logic/tags/tag-show");
 const tag_delete = require("../logic/tags/tag-delete");
+const tag_owner = require("../logic/tags/tag-owner");
 
 class TagCommand extends Command {
     constructor() {
         super("tag", {
             aliases: ["t", "tag"],
-            typing: true,
             args: [
                 {
                     id: "one",
@@ -53,7 +53,10 @@ class TagCommand extends Command {
                  return tag_list_all(message, Tags);
             }
             else { return tag_list(message, args, Tags, this.client.util); }
-        } 
+        }
+        else if (intent === "owner") {
+            return tag_owner(message, args, Tags, this.client.util)
+        }
         else {
             return tag_show(message, args, Tags)
         }

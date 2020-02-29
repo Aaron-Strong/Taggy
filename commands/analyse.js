@@ -57,7 +57,7 @@ class AnalyseCommand extends Command {
                 }
                 if(safesearch.violence) {
                     console.log("Violence", safesearch.violence);
-                    result.push(["Violenece", safesearch.violence]);
+                    result.push(["Violence", safesearch.violence]);
                 }
                 console.log("\n\n");
 

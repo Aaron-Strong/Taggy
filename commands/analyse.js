@@ -63,10 +63,10 @@ class AnalyseCommand extends Command {
 
                 console.log("Label Results\n");
                 const labels = response[0].labelAnnotations;
-                labels.forEach(label => console.log(label.description + ": " + label.score.toFixed(2)) );
+                labels.forEach(label => console.log(label.description + ": " + label.score.toFixed(2).substring(2)) );
                 labels.forEach(label => {
                     let description = label.description;
-                    let score = label.score.toFixed(2) + "%";
+                    let score = label.score.toFixed(2).substring(2); + "%";
                     result.push([description, score]);
                 })
                 

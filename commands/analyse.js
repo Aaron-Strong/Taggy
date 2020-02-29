@@ -1,6 +1,7 @@
 const { Command } = require("discord-akairo");
 const Pagination = require('discord-paginationembed');
 const vision = require('@google-cloud/vision');
+const isImageUrl = require('is-image-url');
 
 class AnalyseCommand extends Command {
     constructor() {
@@ -18,12 +19,7 @@ class AnalyseCommand extends Command {
     }
 
     exec(message, args) {
-
-        function checkURL(url) {
-            return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
-        }
-
-        if(!checkURL(args.one)) {
+        if(!isImageUrl(args.one)) {
             return message.util.send("Please enter an image")
         } 
         const request = {
@@ -39,12 +35,18 @@ class AnalyseCommand extends Command {
             let result = [];
             console.log("SafeSearch Results\n")
             const safesearch = response[0].safeSearchAnnotation;
-            console.log("Adult Content", safesearch.adult);
-            result.push(["Adult Content", safesearch.adult]);
-            console.log("Drugs", safesearch.medical);
-            result.push(["Drugs", safesearch.medical]);
-            console.log("Violence", safesearch.violence);
-            result.push(["Violenece", safesearch.violence]);
+            if(safesearch.adult) {
+                console.log("Adult Content", safesearch.adult);
+                result.push(["Adult Content", safesearch.adult]);
+            }
+            if(safesearch.medical) {
+                console.log("Drugs", safesearch.medical);
+                result.push(["Drugs", safesearch.medical]);
+            }
+            if(safesearch.violence) {
+                console.log("Violence", safesearch.violence);
+                result.push(["Violenece", safesearch.violence]);
+            }
             console.log("\n\n");
 
             console.log("Label Results\n");

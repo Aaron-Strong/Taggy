@@ -2,6 +2,8 @@ const { AkairoClient, SequelizeProvider } = require('discord-akairo');
 const {db, Tags} = require('./logic/database');
 const env = require('./env.js');
 
+
+
 // Setup bot client
 const taggy = new AkairoClient({
     ownerID: env.owner_id,

@@ -66,7 +66,7 @@ class AnalyseCommand extends Command {
                 labels.forEach(label => console.log(label.description + ": " + label.score.toFixed(2).substring(2)) );
                 labels.forEach(label => {
                     let description = label.description;
-                    let score = label.score.toFixed(2).substring(2); + "%";
+                    let score = (label.score.toFixed(2).substring(2)) + "%";
                     result.push([description, score]);
                 })
                 

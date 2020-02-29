@@ -5,10 +5,10 @@ const isImageUrl = require('is-image-url');
 const download = require('image-downloader')
 
 
-class AnalyseCommand extends Command {
+class ScanCommand extends Command {
     constructor() {
-        super("analyse", {
-            aliases: ["analyze", "analyse"],
+        super("scan", {
+            aliases: ["scan"],
             args: [
                 {
                     id: "one",
@@ -34,42 +34,36 @@ class AnalyseCommand extends Command {
         download.image(downloadOptions).then(({ filename, image }) => {
             console.log("Downloaded file to: " + filename)
             const request = {
-                image: {source: {filename: filename}},
-                features: [
-                {type: 'SAFE_SEARCH_DETECTION'},
-                {type: 'LABEL_DETECTION'}
-                ]
+                image: {source: {filename: filename}}
             };
             this.visionClient
-            .annotateImage(request)
+            .faceDetection(request)
             .then(response => {
                 let result = [];
                 
-                console.log("SafeSearch Results\n")
-                const safesearch = response[0].safeSearchAnnotation;
-                if(safesearch.adult) {
-                    console.log("Adult Content", safesearch.adult);
-                    result.push(["Adult Content", safesearch.adult]);
+                console.log(response);
+                console.log("Face Results\n");
+                const faces = response[0].faceAnnotations;
+                if(!faces.length) {
+                    return message.util.send("Google can't find any faces :C")
                 }
-                if(safesearch.medical) {
-                    console.log("Drugs", safesearch.medical);
-                    result.push(["Drugs", safesearch.medical]);
-                }
-                if(safesearch.violence) {
-                    console.log("Violence", safesearch.violence);
-                    result.push(["Violence", safesearch.violence]);
-                }
-                console.log("\n\n");
-
-                console.log("Label Results\n");
-                const labels = response[0].labelAnnotations;
-                labels.forEach(label => console.log(label.description + ": " + label.score.toFixed(2).substring(2)) );
-                labels.forEach(label => {
-                    let description = label.description;
-                    let score = (label.score.toFixed(2).substring(2)) + "%";
-                    result.push([description, score]);
-                })
+                faces.forEach((face, i) => {
+                    console.log(`  Face #${i + 1}:`);
+                    console.log(`    Joy: ${face.joyLikelihood}`);
+                    console.log(`    Anger: ${face.angerLikelihood}`);
+                    console.log(`    Sorrow: ${face.sorrowLikelihood}`);
+                    console.log(`    Surprise: ${face.surpriseLikelihood}`);
+                  });
                 
+                faces.forEach((face, i ) => {
+                    result.push(['Face ' + i, ""]);
+                    result.push(["", ""]);
+                    result.push(["Joy:", face.joyLikelihood])
+                    result.push(["Anger:", face.angerLikelihood])
+                    result.push(["Sorrow:", face.sorrowLikelihood])
+                    result.push(["Surprise:", face.surpriseLikelihood])
+                })
+
                 const FieldsEmbed = new Pagination.FieldsEmbed()
                 // A must: an array to paginate, can be an array of any type
                 .setArray(result)
@@ -84,7 +78,7 @@ class AnalyseCommand extends Command {
                 // Disable the default emojis
                 .setDisabledNavigationEmojis(['DELETE'])
                 // Format based on the array, in this case we're formatting the page based on each object's `word` property
-                .formatField(`Image Analysis`, result => (`${result[0]}: ${result[1]}`))
+                .formatField(`Image Analysis`, result => (`${result[0]} ${result[1]}`))
                 .setDeleteOnTimeout(false);
                 // Customise embed
                 FieldsEmbed.embed
@@ -105,4 +99,4 @@ class AnalyseCommand extends Command {
     }
 }
 
-module.exports = AnalyseCommand;
+module.exports = ScanCommand;

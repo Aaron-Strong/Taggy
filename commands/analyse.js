@@ -21,12 +21,26 @@ class AnalyseCommand extends Command {
     }
 
     exec(message, args) {
-        if(!isImageUrl(args.one)) {
-            return message.util.send("Please enter an image")
+        let member;
+        let url;
+        try {
+            member = this.client.util.resolveMember(args.one, message.guild.members);
+        } catch (error) { }
+        
+        if(member) {
+            console.log(member.user);
+            url = member.user.displayAvatarURL;
         }
+        else if(isImageUrl(args.one)) {
+            url = args.one;
+        }
+        else {
+            return message.util.send("No image found");
+        }
+        console.log(url);
 
         const downloadOptions = {
-            url: args.one,
+            url: url,
             dest: './analyse.jpg' // Save to /path/to/dest/image.jpg
         }
 

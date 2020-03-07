@@ -21,18 +21,26 @@ class AnalyseCommand extends Command {
     }
 
     exec(message, args) {
+        if(!args.one) {
+            return message.util.send('Please enter an image');
+        }
         let member;
         let url;
         try {
             member = this.client.util.resolveMember(args.one, message.guild.members);
         } catch (error) { }
         
-        if(member) {
-            console.log(member.user);
-            url = member.user.displayAvatarURL;
-        }
-        else if(isImageUrl(args.one)) {
+
+        if(isImageUrl(args.one)) {
+            message.util.send({code: true, content: `Analysing ${member.user.args.one})`});
             url = args.one;
+            console.log(args.one);
+        }
+        else if(member != null) {
+            message.util.send({code: true, content: `Analysing ${member.user.displayAvatarURL})`});
+            url = member.user.displayAvatarURL;
+            console.log(member.user);
+
         }
         else {
             return message.util.send("No image found");

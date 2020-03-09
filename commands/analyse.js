@@ -32,7 +32,7 @@ class AnalyseCommand extends Command {
         
 
         if(isImageUrl(args.one)) {
-            message.util.send({code: true, content: `Analysing ${member.user.args.one})`});
+            message.util.send({code: true, content: `Analysing ${args.one}`});
             url = args.one;
             console.log(args.one);
         }
